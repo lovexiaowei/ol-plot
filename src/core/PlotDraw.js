@@ -9,7 +9,7 @@ import PlotTypes from '../Utils/PlotTypes'
 import Observable from 'observable-emit'
 import DomUtils from 'nature-dom-util'
 import PlotFactory from './PlotFactory'
-class PlotDraw extends mix(PlotFactory) {
+class PlotDraw extends mix(PlotFactory, Observable) {
   constructor (map, params) {
     super()
     if (map && map instanceof ol.Map) {
@@ -61,12 +61,6 @@ class PlotDraw extends mix(PlotFactory) {
     this.drawOverlay = null
 
     /**
-     * 事件监听器
-     * @type {*}
-     */
-    this.Observable = new Observable()
-
-    /**
      * 创建图层名称
      * @type {string}
      */
@@ -79,6 +73,7 @@ class PlotDraw extends mix(PlotFactory) {
     this.drawLayer = this.createVectorLayer(this.layerName, {
       create: true
     })
+    Observable.call(this)
   }
 
   /**
@@ -292,7 +287,7 @@ class PlotDraw extends mix(PlotFactory) {
    * 绘制结束
    */
   drawEnd (event) {
-    this.Observable.dispatchSync({
+    this.dispatchSync('drawEnd', {
       type: 'drawEnd',
       originalEvent: event,
       feature: this.feature

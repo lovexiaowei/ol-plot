@@ -14,7 +14,8 @@ module.exports = {
   },
   base: {
     libraryName: 'olPlot',
+    fileName: 'ol-plot',
     distDirectory: path.resolve(__dirname, '../dist'),
-    assetsSubDirectory: 'static'
+    assetsSubDirectory: ''
   }
 }

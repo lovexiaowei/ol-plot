@@ -10,7 +10,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <title>军事标绘(ol3-4)</title>
   <link rel="stylesheet" href="../node_modules/openlayers/dist/ol.css" type="text/css">
-  <link rel="stylesheet" href="../dist/static/css/olPlot.css">
+  <link rel="stylesheet" href="../dist/ol-plot.css">
   <style>
     html, body, #map {
       width: 100%;
@@ -108,7 +108,7 @@
 </div>
 <script src="../node_modules/openlayers/dist/ol-debug.js"></script>
 <script src="./lib/GaoDe.js"></script>
-<script src="../dist/olPlot.js"></script>
+<script src="../dist/ol-plot.js"></script>
 <script type="text/javascript">
   var gaodeMapLayer = new ol.layer.Tile({
     source: new ol.source.GAODE({
@@ -134,7 +134,7 @@
     plot.plotEdit.activate(feature);
   }
 
-  plot.plotDraw.Observable.on('drawEnd', onDrawEnd, this)
+  plot.plotDraw.on('drawEnd', onDrawEnd)
   // 指定标绘类型，开始绘制。
   function activate (type) {
     plot.plotEdit.deactivate();

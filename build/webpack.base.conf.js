@@ -12,7 +12,7 @@ module.exports = {
   entry: './src/index.js',
   output: {
     path: config.base.distDirectory,
-    filename: config.base.libraryName + (process.env.NODE_ENV === 'production' ? '.min.js' : '.js'),
+    filename: config.base.fileName + (process.env.NODE_ENV === 'production' ? '.min.js' : '.js'),
     library: config.base.libraryName,
     libraryTarget: 'umd',
     umdNamedDefine: true
