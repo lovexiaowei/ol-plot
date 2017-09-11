@@ -62,6 +62,7 @@ class PlotEdit extends Observable {
      * @private
      */
     this.previousCursor_ = null
+    Observable.call(this)
   }
 
   /**
@@ -200,28 +201,85 @@ class PlotEdit extends Observable {
    * @returns {boolean}
    */
   activate (plot) {
-    try {
-      if (!plot || !(plot instanceof ol.Feature) || plot === this.activePlot || plot.get('notInstancePlot')) {
-        return false
+    if (plot && plot instanceof ol.Feature && plot.get('isPlot') && plot !== this.activePlot) {
+      this.deactivate()
+      this.activePlot = plot
+      this.previousCursor_ = this.map.getTargetElement().style.cursor
+      if (plot.get('_text_area_source_')) {
+        let source = plot.get('_text_area_source_')
+        source.featureOnFocus()
+        this.map.on('pointermove', this.baseTextAreaPointMove_, this)
       } else {
-        let geom = plot.getGeometry()
-        if (!geom.isPlot || !geom.isPlot()) {
-          return false
-        } else {
-          this.deactivate()
-          this.previousCursor_ = this.map.getTargetElement().style.cursor
-          this.activePlot = plot
-          window.setTimeout(() => {
-            // this.dispatchEvent(new EditEvent(EditEvent.ACTIVE_PLOT_CHANGE, this.activePlot))
-          }, 500)
-          this.map.on('pointermove', this.plotMouseOverOutHandler, this)
-          this.initHelperDom()
-          this.initControlPoints()
-        }
+        window.setTimeout(() => {
+          this.dispatch('active_plot_change', this.activePlot)
+        }, 500)
+        this.map.on('pointermove', this.plotMouseOverOutHandler, this)
+        this.initHelperDom()
+        this.initControlPoints()
       }
-    } catch (e) {
-      console.log(e)
     }
+  }
+
+  /**
+   * 针对文本框的移动事件处理
+   * @param event
+   * @returns {T|undefined}
+   * @private
+   */
+  baseTextAreaPointMove_ (event) {
+    let feature = this.map.forEachFeatureAtPixel(event.pixel, function (feature, layer) {
+      return feature
+    })
+    if (feature && feature === this.activePlot) {
+      if (!this.mouseOver) {
+        this.mouseOver = true
+        this.map.getTargetElement().style.cursor = 'move'
+        this.map.on('pointerdown', this.baseTextAreaPointerDown_, this)
+      }
+    } else {
+      if (this.mouseOver) {
+        this.mouseOver = false
+        this.map.getTargetElement().style.cursor = 'default'
+        this.map.un('pointerdown', this.baseTextAreaPointerDown_, this)
+      }
+    }
+    return feature
+  }
+
+  /**
+   * 处理鼠标按下事件
+   * @param event
+   * @private
+   */
+  baseTextAreaPointerDown_ (event) {
+    this.startPoint = this.activePlot.getGeometry().getCoordinates()
+    this.disableMapDragPan()
+    this.map.on('pointerup', this.baseTextAreaPointerUp_, this)
+    this.map.on('pointerdrag', this.baseTextAreaPointerDrag_, this)
+  }
+
+  /**
+   * 针对文本框的鼠标抬起事件处理
+   * @param event
+   * @private
+   */
+  baseTextAreaPointerUp_ (event) {
+    this.enableMapDragPan()
+    this.map.un('pointerup', this.baseTextAreaPointerUp_, this)
+    this.map.un('pointerdrag', this.baseTextAreaPointerDrag_, this)
+  }
+
+  /**
+   * 针对文本框的鼠标拖拽事件处理
+   * @param event
+   * @private
+   */
+  baseTextAreaPointerDrag_ (event) {
+    let deltaX = event.coordinate[0] - this.startPoint[0]
+    let deltaY = event.coordinate[1] - this.startPoint[1]
+    let geometry = /** @type {ol.geom.SimpleGeometry} */
+      (this.activePlot.getGeometry())
+    geometry.translate(deltaX, deltaY)
   }
 
   /**

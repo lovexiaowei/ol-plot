@@ -10,6 +10,7 @@ import Observable from 'observable-emit'
 import * as Events from 'nature-dom-util/src/events/Events'
 import { BASE_LAYERNAME } from '../Constants'
 import PlotFactory from './PlotFactory'
+import TextArea from '../Geometry/Text/TextArea'
 class PlotDraw extends mixin(PlotFactory, Observable) {
   constructor (map, params) {
     super()
@@ -85,9 +86,14 @@ class PlotDraw extends mixin(PlotFactory, Observable) {
   active (type, params) {
     this.disActive()
     this.deactiveMapTools()
-    this.map.on('click', this.mapFirstClickHandler, this)
-    this.plotType = type
-    this.plotParams = params || {}
+    if (type === 'TextArea') {
+      let textInter = new TextArea(this.map, this.drawLayer, params)
+      console.log(textInter)
+    } else {
+      this.map.on('click', this.mapFirstClickHandler, this)
+      this.plotType = type
+      this.plotParams = params || {}
+    }
   }
 
   /**
@@ -205,6 +211,7 @@ class PlotDraw extends mixin(PlotFactory, Observable) {
     this.plot = this.createPlot(this.plotType, this.points, this.plotParams)
     this.plot.setMap(this.map)
     this.feature = new ol.Feature(this.plot)
+    this.feature.set('isPlot', true)
     this.drawLayer.getSource().addFeature(this.feature)
     this.map.un('click', this.mapFirstClickHandler, this)
     if (this.plotType === PlotTypes.POINT || this.plotType === PlotTypes.PENNANT) {

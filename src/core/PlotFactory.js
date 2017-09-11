@@ -24,6 +24,8 @@ class PlotFactory {
   createPlot (type, points, _params) {
     let params = _params || {}
     switch (type) {
+      case PlotTypes.TextArea:
+        return 'TextArea'
       case PlotTypes.POINT:
         return new Plots.Point(points, params)
       case PlotTypes.PENNANT:

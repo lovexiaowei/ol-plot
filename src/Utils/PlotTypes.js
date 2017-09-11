@@ -2,6 +2,7 @@
  * Created by FDD on 2017/5/20.
  */
 module.exports = {
+  TextArea: 'TextArea', // 文本标绘（特殊）
   ARC: 'Arc',
   CURVE: 'Curve',
   GATHERING_PLACE: 'GatheringPlace',

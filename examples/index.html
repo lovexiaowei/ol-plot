@@ -81,6 +81,7 @@
 <body>
 <div id="map"></div>
 <div class="user-tool">
+  <button class="btn btn-success" onclick="activate('TextArea')">测试文本标绘</button>
   <button class="btn btn-success" onclick="activate('Point')">测试画点</button>
   <button class="btn btn-success" onclick="activate('Polyline')">测试画线</button>
   <button class="btn btn-success" onclick="activate('Curve')">测试画曲线</button>
@@ -114,21 +115,30 @@
   var gaodeMapLayer = new ol.layer.Tile({
     source: new ol.source.BAIDU({
       projection: 'EPSG:3857',
-      origin: [43.88955327932, 12.590178885765]
+      origin: [43.88955327932, 12.590178885765],
+      url: 'http://shangetu{0-3}.map.bdimg.com/it/u=x={x};y={y};z={z};v=009;type=sate&fm=46&app=webearth2&v=009&udt=20170908'
     })
   });
   var map = new ol.Map({
     layers: [gaodeMapLayer],
     view: new ol.View({
-      center: [108.93, 34.27],
-      projection: 'EPSG:4326',
+//      center: [108.93, 34.27],
+      center: [12095486.34146684, 4085090.6140265367],
+      projection: 'EPSG:3857',
       zoom: 5
     }),
     target: 'map'
   });
 
   map.on('click', function (event) {
-    console.log(event)
+    var feature = map.forEachFeatureAtPixel(event.pixel, function (feature) {
+      return feature
+    })
+    if (feature && feature.get('isPlot')) {
+      plot.plotEdit.activate(feature);
+    } else {
+      plot.plotEdit.deactivate();
+    }
   })
 
   var plot = new olPlot(map)
