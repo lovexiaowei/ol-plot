@@ -1,6 +1,8 @@
 import EventType from '../Event/EventType'
 import Observable from 'observable-emit'
-import DomUtils from 'nature-dom-util'
+import * as htmlUtils from 'nature-dom-util/src/utils/domUtils'
+import * as Events from 'nature-dom-util/src/events/Events'
+import { BASE_HELP_CONTROL_POINT_ID, BASE_HELP_HIDDEN } from '../Constants'
 class PlotEdit extends Observable {
   constructor (map) {
     super()
@@ -74,12 +76,12 @@ class PlotEdit extends Observable {
     if (!parent) {
       return false
     } else {
-      let hiddenDiv = DomUtils.htmlUtils.createHidden('div', parent, 'plot-helper-hidden-div')
+      let hiddenDiv = htmlUtils.createHidden('div', parent, BASE_HELP_HIDDEN)
       let cPnts = this.getControlPoints()
       if (cPnts && Array.isArray(cPnts) && cPnts.length > 0) {
         cPnts.forEach((item, index) => {
-          let id = 'plot-helper-control-point-div' + '-' + index
-          DomUtils.htmlUtils.create('div', 'plot-helper-control-point-div', hiddenDiv, id)
+          let id = BASE_HELP_CONTROL_POINT_ID + '-' + index
+          htmlUtils.create('div', BASE_HELP_CONTROL_POINT_ID, hiddenDiv, id)
           this.elementTable[id] = index
         })
       }
@@ -108,18 +110,18 @@ class PlotEdit extends Observable {
         if (item && item instanceof ol.Overlay) {
           this.map.removeOverlay(item)
         }
-        let element = DomUtils.htmlUtils.get('plot-helper-control-point-div' + '-' + index)
+        let element = htmlUtils.get(BASE_HELP_CONTROL_POINT_ID + '-' + index)
         if (element) {
-          DomUtils.Events.removeListener(element, 'mousedown', this.controlPointMouseDownHandler, this)
-          DomUtils.Events.removeListener(element, 'mousemove', this.controlPointMouseMoveHandler2, this)
+          Events.removeListener(element, 'mousedown', this.controlPointMouseDownHandler, this)
+          Events.removeListener(element, 'mousemove', this.controlPointMouseMoveHandler2, this)
         }
       })
       this.controlPoints = []
     }
     let parent = this.getMapParentElement()
-    let hiddenDiv = DomUtils.htmlUtils.get('plot-helper-hidden-div')
+    let hiddenDiv = htmlUtils.get(BASE_HELP_HIDDEN)
     if (hiddenDiv && parent) {
-      DomUtils.htmlUtils.remove(hiddenDiv, parent)
+      htmlUtils.remove(hiddenDiv, parent)
     }
   }
 
@@ -131,9 +133,9 @@ class PlotEdit extends Observable {
     let cPnts = this.getControlPoints()
     if (cPnts && Array.isArray(cPnts) && cPnts.length > 0) {
       cPnts.forEach((item, index) => {
-        let id = 'plot-helper-control-point-div' + '-' + index
+        let id = BASE_HELP_CONTROL_POINT_ID + '-' + index
         this.elementTable[id] = index
-        let element = DomUtils.htmlUtils.get(id)
+        let element = htmlUtils.get(id)
         let pnt = new ol.Overlay({
           id: id,
           position: cPnts[index],
@@ -143,8 +145,8 @@ class PlotEdit extends Observable {
         this.controlPoints.push(pnt)
         this.map.addOverlay(pnt)
         this.map.render()
-        DomUtils.Events.addListener(element, 'mousedown', this.controlPointMouseDownHandler, this)
-        DomUtils.Events.addListener(element, 'mousemove', this.controlPointMouseMoveHandler2, this)
+        Events.addListener(element, 'mousedown', this.controlPointMouseDownHandler, this)
+        Events.addListener(element, 'mousemove', this.controlPointMouseMoveHandler2, this)
       })
     }
   }
@@ -164,8 +166,8 @@ class PlotEdit extends Observable {
   controlPointMouseDownHandler (e) {
     let id = e.target.id
     this.activeControlPointId = id
-    DomUtils.Events.listen(this.mapViewport, EventType.MOUSEMOVE, this.controlPointMouseMoveHandler, this, false)
-    DomUtils.Events.listen(this.mapViewport, EventType.MOUSEUP, this.controlPointMouseUpHandler, this, false)
+    Events.listen(this.mapViewport, EventType.MOUSEMOVE, this.controlPointMouseMoveHandler, this, false)
+    Events.listen(this.mapViewport, EventType.MOUSEUP, this.controlPointMouseUpHandler, this, false)
   }
 
   /**
@@ -188,8 +190,8 @@ class PlotEdit extends Observable {
    * @param e
    */
   controlPointMouseUpHandler (e) {
-    DomUtils.Events.unListen(this.mapViewport, EventType.MOUSEMOVE, this.controlPointMouseMoveHandler, this)
-    DomUtils.Events.unListen(this.mapViewport, EventType.MOUSEUP, this.controlPointMouseUpHandler, this)
+    Events.unListen(this.mapViewport, EventType.MOUSEMOVE, this.controlPointMouseMoveHandler, this)
+    Events.unListen(this.mapViewport, EventType.MOUSEUP, this.controlPointMouseUpHandler, this)
   }
 
   /**
@@ -291,7 +293,7 @@ class PlotEdit extends Observable {
           let p = this.ghostControlPoints[index]
           let coordinate = [p[0] + dx, p[1] + dy]
           newPoints.push(coordinate)
-          let id = 'plot-helper-control-point-div' + '-' + index
+          let id = BASE_HELP_CONTROL_POINT_ID + '-' + index
           let overlay = this.map.getOverlayById(id)
           overlay.setPosition(coordinate)
           overlay.setPositioning('center-center')
@@ -319,8 +321,8 @@ class PlotEdit extends Observable {
    */
   disconnectEventHandlers () {
     this.map.un('pointermove', this.plotMouseOverOutHandler, this)
-    DomUtils.Events.unListen(this.mapViewport, EventType.MOUSEMOVE, this.controlPointMouseMoveHandler, this)
-    DomUtils.Events.unListen(this.mapViewport, EventType.MOUSEUP, this.controlPointMouseUpHandler, this)
+    Events.unListen(this.mapViewport, EventType.MOUSEMOVE, this.controlPointMouseMoveHandler, this)
+    Events.unListen(this.mapViewport, EventType.MOUSEUP, this.controlPointMouseUpHandler, this)
     this.map.un('pointerdown', this.plotMouseDownHandler, this)
     this.map.un('pointerup', this.plotMouseUpHandler, this)
     this.map.un('pointerdrag', this.plotMouseMoveHandler, this)

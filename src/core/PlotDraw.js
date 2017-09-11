@@ -2,14 +2,15 @@
  * Created by FDD on 2017/5/15.
  * @desc PlotDraw
  */
-import mix from '../Utils/mixin'
+import mixin from '../Utils/mixin'
 import { MathDistance } from '../Utils/utils'
 import EventType from '../Event/EventType'
 import PlotTypes from '../Utils/PlotTypes'
 import Observable from 'observable-emit'
-import DomUtils from 'nature-dom-util'
+import * as Events from 'nature-dom-util/src/events/Events'
+import { BASE_LAYERNAME } from '../Constants'
 import PlotFactory from './PlotFactory'
-class PlotDraw extends mix(PlotFactory, Observable) {
+class PlotDraw extends mixin(PlotFactory, Observable) {
   constructor (map, params) {
     super()
     if (map && map instanceof ol.Map) {
@@ -64,7 +65,7 @@ class PlotDraw extends mix(PlotFactory, Observable) {
      * 创建图层名称
      * @type {string}
      */
-    this.layerName = ((this.options && this.options['layerName']) ? this.options['layerName'] : 'GISPLOTLAYER')
+    this.layerName = ((this.options && this.options['layerName']) ? this.options['layerName'] : BASE_LAYERNAME)
 
     /**
      * 当前矢量图层
@@ -214,7 +215,7 @@ class PlotDraw extends mix(PlotFactory, Observable) {
       if (!this.plot.freehand) {
         this.map.on('dblclick', this.mapDoubleClickHandler, this)
       }
-      DomUtils.Events.listen(this.mapViewport, EventType.MOUSEMOVE, this.mapMouseMoveHandler, this, false)
+      Events.listen(this.mapViewport, EventType.MOUSEMOVE, this.mapMouseMoveHandler, this, false)
     }
     if (this.plotType && this.feature) {
       this.plotParams['plotType'] = this.plotType
@@ -279,7 +280,7 @@ class PlotDraw extends mix(PlotFactory, Observable) {
   removeEventHandlers () {
     this.map.un('click', this.mapFirstClickHandler, this)
     this.map.un('click', this.mapNextClickHandler, this)
-    DomUtils.Events.unListen(this.mapViewport, EventType.MOUSEMOVE, this.mapMouseMoveHandler, this)
+    Events.unListen(this.mapViewport, EventType.MOUSEMOVE, this.mapMouseMoveHandler, this)
     this.map.un('dblclick', this.mapDoubleClickHandler, this)
   }
 
@@ -342,5 +343,4 @@ class PlotDraw extends mix(PlotFactory, Observable) {
     }
   }
 }
-
 export default PlotDraw
