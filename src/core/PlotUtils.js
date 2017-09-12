@@ -172,8 +172,7 @@ class PlotUtils extends mixin(olLayerLayerUtils, olStyleFactory) {
   getColor (color) {
     try {
       let colorTarget = ol.color.asArray(color)
-      colorTarget[3] = 1
-      return ol.color.asString(colorTarget)
+      return (ol.color.asString(colorTarget))
     } catch (e) {
       console.warn(e)
     }
@@ -187,7 +186,7 @@ class PlotUtils extends mixin(olLayerLayerUtils, olStyleFactory) {
   fixObject (obj) {
     if (obj && typeof obj === 'object') {
       for (let key in obj) {
-        if (key && typeof obj[key]) {
+        if (key && typeof obj[key] === 'undefined') {
           delete obj[key]
         }
       }
@@ -230,7 +229,8 @@ class PlotUtils extends mixin(olLayerLayerUtils, olStyleFactory) {
       let olStyle_ = style.getFill()
       if (olStyle_) {
         fill = {}
-        fill['fillColor'] = this.getColor(olStyle_.getColor())
+        let color = olStyle_.getColor()
+        fill['fillColor'] = this.getColor(color)
       }
     }
     return this.fixObject(fill)
@@ -344,6 +344,43 @@ class PlotUtils extends mixin(olLayerLayerUtils, olStyleFactory) {
     } catch (e) {
       console.warn(e)
     }
+  }
+
+  /**
+   * 获取所有的要素包含样式信息的GeoJSON
+   * @returns {Array}
+   */
+  getFeatures () {
+    let rFeatures = []
+    let layer = this.getLayerByLayerName(this.layerName)
+    if (layer) {
+      let source = layer.getSource()
+      if (source && source instanceof ol.source.Vector) {
+        let features = source.getFeatures()
+        if (features && features.length > 0) {
+          features.forEach((feature, index) => {
+            if (feature && feature.getGeometry) {
+              let geom = feature.getGeometry()
+              if (geom && geom.getCoordinates) {
+                let type = geom.getType()
+                let coordinates = geom.getCoordinates()
+                rFeatures.push({
+                  'type': 'Feature',
+                  'geometry': {
+                    'type': type,
+                    'coordinates': coordinates
+                  },
+                  'properties': {
+                    'style': this.getStyleCode(feature)
+                  }
+                })
+              }
+            }
+          })
+        }
+      }
+    }
+    return rFeatures
   }
 }
 
