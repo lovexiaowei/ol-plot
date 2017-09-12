@@ -92,7 +92,9 @@ class PlotDraw extends mixin(PlotFactory, Observable, olLayerLayerUtils) {
     this.plotParams = params
     if (type === 'TextArea') {
       let textInter = new TextArea(this.map, this.drawLayer, params)
-      console.log(textInter)
+      textInter.on('TextAreaDrawEnd', event => {
+        this.disActive()
+      })
     } else {
       this.map.on('click', this.mapFirstClickHandler, this)
     }
