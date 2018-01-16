@@ -11,8 +11,11 @@
     "build": "node build/build.js"
   },
   "dependencies": {
-    "vue": "^2.5.2",
-    "openlayers": "^4.6.4"
+    "node-sass": "^4.7.2",
+    "normalize.css": "^7.0.0",
+    "openlayers": "^4.6.4",
+    "sass-loader": "^6.0.6",
+    "vue": "^2.5.2"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",

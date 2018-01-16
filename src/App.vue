@@ -8,7 +8,6 @@
   import ol from 'openlayers'
   import GOOGLE from './map/source/Google'
   import BAIDU from './map/source/Baidu'
-  // import ContextMenu from './map/controls/contextMenu'
   import layerSwitcher from './components/control/LayerSwitcher'
   export default {
     data () {
@@ -95,6 +94,46 @@
   }
 </script>
 <style lang="scss">
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0
+  }
+  ul, li {
+    list-style: none;
+  }
+  .clearfix {
+    *zoom: 1;
+  }
+  .clearfix:after {
+    visibility: hidden;
+    display: block;
+    font-size: 0;
+    content: " ";
+    clear: both;
+    height: 0;
+  }
+  :focus {
+    outline: none;
+  }
+  a {
+    text-decoration: none;
+    outline: none;
+  }
   .map-box {
+    position: absolute;
+    top: 0px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    font-family: Helvetica Neue For Number,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,PingFang SC,Hiragino Sans GB,Microsoft YaHei,Helvetica Neue,Helvetica,Arial,sans-serif;
+    font-size: 12px;
+    line-height: 1.5;
+    color: #3a3a3a;
   }
 </style>
