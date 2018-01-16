@@ -28,8 +28,7 @@
                 @mouseover="mouseOverHandle(tool)"
                 @mouseout="mouseOutHandle(tool)"
                 @click="changeSelectedItem(tool, index)">
-                <span
-                  :style="{background: 'url(static/images/plot/' + tool.src + ((tool.mouseover || selected === tool.alias) ? '-hover' : '') + '.png) no-repeat'}"></span>
+                <span :style="{background: 'url(static/images/plot/' + tool.src + ((tool.mouseover || selected === tool.alias) ? '-hover' : '') + '.png) no-repeat'}"></span>
                 <span>{{tool.name}}</span>
               </li>
             </ul>
@@ -55,10 +54,6 @@
         </div>
         <div class="sf-plot-workspace-text-control" v-else-if="selected === 'TextArea'">
           <div class="plot-edit">
-            <div class="plot-edit-delete">
-              <span class="stration span-background">删除当前激活的文本：</span>
-              <el-button @click="deleteCurrentPlotText()" type="primary" size="small" icon="delete"></el-button>
-            </div>
             <div class="plot-edit-color">
               <span class="stration span-background">背景色</span>
               <sf-color-picker :color-format="'rgb'" v-model="textAreaBackgroundColor"></sf-color-picker>
@@ -85,7 +80,6 @@
   import {mapState} from 'vuex'
   import Vue from 'vue'
   import * as $fetch from '@/store/api'
-
   export default {
     name: 'sf-plot-workspace',
     data () {
@@ -148,40 +142,40 @@
       },
       textAreaBackgroundColor: function (value) {
         console.log(value)
-        if (value && this.currentTextArea && this.currentTextArea.overlay) {
-          this.plot.plotUtils.setPlotTextStyle(this.currentTextArea.overlay, {
+        if (value && this.currentTextArea) {
+          this.currentTextArea.setStyle({
             background: value
           })
         }
       },
       textAreaBorderColor: function (value) {
         console.log(value)
-        if (value && this.currentTextArea && this.currentTextArea.overlay) {
-          this.plot.plotUtils.setPlotTextStyle(this.currentTextArea.overlay, {
+        if (value && this.currentTextArea) {
+          this.currentTextArea.setStyle({
             border: this.textAreaBorderWidth + 'px' + ' solid ' + value
           })
         }
       },
       textAreaColor: function (value) {
         console.log(value)
-        if (value && this.currentTextArea && this.currentTextArea.overlay) {
-          this.plot.plotUtils.setPlotTextStyle(this.currentTextArea.overlay, {
+        if (value && this.currentTextArea) {
+          this.currentTextArea.setStyle({
             color: value
           })
         }
       },
       textAreaFontSize: function (value) {
         console.log(value)
-        if (value && this.currentTextArea && this.currentTextArea.overlay) {
-          this.plot.plotUtils.setPlotTextStyle(this.currentTextArea.overlay, {
+        if (value && this.currentTextArea) {
+          this.currentTextArea.setStyle({
             fontSize: value + 'px'
           })
         }
       },
       textAreaBorderWidth: function (value) {
         console.log(value)
-        if (value && this.currentTextArea && this.currentTextArea.overlay) {
-          this.plot.plotUtils.setPlotTextStyle(this.currentTextArea.overlay, {
+        if (value && this.currentTextArea) {
+          this.currentTextArea.setStyle({
             border: value + 'px' + ' solid ' + this.textAreaBorderColor
           })
         }
@@ -224,7 +218,8 @@
           }
         }))
         this.plot.plotDraw.on('drawEnd', this.onDrawEnd_, this)
-        this.plot.plotDraw.on('active_textArea', this.activeTextArea_, this)
+        config.Maps.map.on('activeTextArea', this.activeTextArea_, this)
+        config.Maps.map.on('disActiveTextArea', this.activeTextArea_, this)
         config.Maps.map.un('click', this.handleClick_, this)
         config.Maps.map.on('click', this.handleClick_, this)
       },
@@ -240,8 +235,14 @@
         }
       },
       activeTextArea_ (event) {
-        this.currentTextArea = event
-        this.reFresheTextArea(this.currentTextArea)
+        console.log(event)
+        if (event.type === 'activeTextArea') {
+          this.currentTextArea = event.target.get('activeTextArea')
+          this.reFresheTextArea(this.currentTextArea)
+        } else {
+          // this.currentTextArea = null
+          console.log(event.type)
+        }
       },
       changeSelectedItem (item) {
         this.selected = item['alias']
@@ -298,7 +299,7 @@
       },
       reFresheTextArea (target) {
         if (target) {
-          const _style = this.plot.plotUtils.getPlotTextStyleCode(target.overlay)
+          const _style = target.getStyle()
           if (_style) {
             if (_style['fontSize']) {
               this.textAreaFontSize = parseInt(_style['fontSize'])
@@ -403,14 +404,10 @@
             this.loading = false
           })
         }
-      },
-      deleteCurrentPlotText () {
-        if (this.currentTextArea && this.currentTextArea.overlay) {
-          config.Maps.map.removeOverlay(this.currentTextArea.overlay)
-        }
       }
     },
-    components: {}
+    components: {
+    }
   }
 </script>
 <style lang="scss">
@@ -469,13 +466,13 @@
               display: block;
               margin: auto;
               margin-top: 10px;
-              background-size: 100% 100% !important;
+              background-size: 100% 100%!important;
             }
             span:nth-child(2) {
               display: inline-block;
               width: 100%;
               overflow: hidden;
-              text-overflow: ellipsis;
+              text-overflow:ellipsis;
               white-space: nowrap;
             }
             span {
@@ -489,6 +486,7 @@
               border: 1px #76c4f1 solid;
             }
           }
+
           .sf-plot-selected {
             background: #FFF;
             color: #1B9DE8;
@@ -538,6 +536,7 @@
           height: 40px;
         }
       }
+
       .plot-edit-text {
         text-align: left;
         margin: 10px 0px;
@@ -550,12 +549,15 @@
         }
         .font-color {
         }
+
         .font-size {
           margin-left: 40px;
         }
+
         .el-input-number--small {
           width: 100px;
         }
+
         .span-border {
           margin-left: 50px;
         }
@@ -574,6 +576,7 @@
           height: 40px;
         }
       }
+
       .min-input {
         width: 30px;
         height: 30px;
@@ -582,6 +585,7 @@
         text-align: center;
         border: 1px solid #e3e3e3;
       }
+
       .plot-edit-delete {
         margin: 20px 0 20px;
         padding: 0 15px;
@@ -620,6 +624,7 @@
           linear-gradient(45deg, rgba(0, 0, 0, 0) 75%, #E3E3E3 75%),
           linear-gradient(-45deg, rgba(0, 0, 0, 0) 75%, #E3E3E3 75%);
           background-size: 10px 10px;
+
           .iconfont {
             display: table;
             margin: auto;

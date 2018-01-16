@@ -6,28 +6,16 @@
       <span class="iconfont icon-guanbi" @click="closeFunc()"></span>
     </header>
     <div class="panel-content">
-      <transition-group name="fade">
-        <theme ref="theme" v-show="panelType === 'theme'" :key="'theme'"></theme>
-        <scheme ref="scheme" v-show="panelType === 'scheme'" :key="'scheme'"></scheme>
-        <workspace ref="workspace" v-show="panelType === 'workspace'" :key="'workspace'"></workspace>
-      </transition-group>
+      <workspace ref="workspace"></workspace>
     </div>
   </div>
 </template>
+
 <script>
-  import {mapState} from 'vuex'
-  import theme from './theme'
-  import scheme from './scheme'
   import workspace from './workspace'
   export default {
     name: 'sf-plot',
     computed: {
-      ...mapState({
-        panelSelected: state => state.customPanel.selected,
-        panelType: state => state.plot.panelType,
-        themeData: state => state.plot.themeData,
-        schemeData: state => state.plot.schemeData
-      })
     },
     data () {
       return {
@@ -61,12 +49,11 @@
       }
     },
     components: {
-      theme,
-      scheme,
       workspace
     }
   }
 </script>
+
 <style lang="scss">
   .sf-plot {
     position: absolute;

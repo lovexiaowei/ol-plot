@@ -14,8 +14,10 @@
     "node-sass": "^4.7.2",
     "normalize.css": "^7.0.0",
     "openlayers": "^4.6.4",
+    "popper.js": "^1.12.9",
     "sass-loader": "^6.0.6",
-    "vue": "^2.5.2"
+    "vue": "^2.5.2",
+    "vue-color": "^2.4.3"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",

@@ -1,4 +1,4 @@
-import Pagination from '../packages/pagination/index.js'
+import Pagination from './/pagination/index.js'
 
 const components = [
   Pagination
