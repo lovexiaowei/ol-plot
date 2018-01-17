@@ -1,6 +1,7 @@
 <template>
   <div id="main-map" class="map-box">
     <layer-switcher></layer-switcher>
+    <ol-plot-vue :map="map" :plots="plots"></ol-plot-vue>
   </div>
 </template>
 <script>
@@ -9,6 +10,7 @@
   import GOOGLE from './map/source/Google'
   import BAIDU from './map/source/Baidu'
   import layerSwitcher from './components/control/LayerSwitcher'
+  import plots from './assets/plots'
   export default {
     data () {
       return {
@@ -39,7 +41,9 @@
               iconColor: '#2994EF'
             }
           ]
-        }
+        },
+        plots: plots,
+        map: null
       }
     },
     mounted () {
@@ -81,6 +85,7 @@
           })
         })
         Vue.prototype.$View = this.$Map.getView()
+        this.map = this.$Map
         this.addContextMenu()
       },
       // 添加右键菜单

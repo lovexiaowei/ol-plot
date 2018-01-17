@@ -1,4 +1,5 @@
 import { PopupManager } from './popup'
+// import PopperJS from 'popper.js'
 const popper = require('./popper')
 const PopperJS = popper.Popper
 const stop = e => e.stopPropagation()

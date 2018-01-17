@@ -1,0 +1,140 @@
+[
+  {
+    "id": "Point",
+    "name": "目标",
+    "alias": "Point",
+    "src": "Point"
+  },
+  {
+    "id": "AttackArrow",
+    "name": "进攻方向",
+    "alias": "AttackArrow",
+    "src": "AttackArrow"
+  },
+  {
+    "id": "AssaultDirection",
+    "name": "直箭头",
+    "alias": "AssaultDirection",
+    "src": "AssaultDirection"
+  },
+  {
+    "id": "FineArrow",
+    "name": "斜箭头",
+    "alias": "FineArrow",
+    "src": "FineArrow"
+  },
+  {
+    "id": "DoubleArrow",
+    "name": "双箭头",
+    "alias": "DoubleArrow",
+    "src": "DoubleArrow"
+  },
+  {
+    "id": "StraightArrow",
+    "name": "细直箭头",
+    "alias": "StraightArrow",
+    "src": "StraightArrow"
+  },
+  {
+    "id": "TailedAttackArrow",
+    "name": "燕尾曲箭头",
+    "alias": "TailedAttackArrow",
+    "src": "TailedAttackArrow"
+  },
+  {
+    "id": "SquadCombat",
+    "name": "曲箭头",
+    "alias": "SquadCombat",
+    "src": "SquadCombat"
+  },
+  {
+    "id": "RectAngle",
+    "name": "矩形",
+    "alias": "RectAngle",
+    "src": "RectAngle"
+  },
+  {
+    "id": "Circle",
+    "name": "圆形",
+    "alias": "Circle",
+    "src": "Circle"
+  },
+  {
+    "id": "Ellipse",
+    "name": "椭圆形",
+    "alias": "Ellipse",
+    "src": "Ellipse"
+  },
+  {
+    "id": "Polygon",
+    "name": "多边形",
+    "alias": "Polygon",
+    "src": "Polygon"
+  },
+  {
+    "id": "GatheringPlace",
+    "name": "集结地",
+    "alias": "GatheringPlace",
+    "src": "GatheringPlace"
+  },
+  {
+    "id": "Sector",
+    "name": "扇形",
+    "alias": "Sector",
+    "src": "Sector"
+  },
+  {
+    "id": "Arc",
+    "name": "弓形",
+    "alias": "Arc",
+    "src": "Arc"
+  },
+  {
+    "id": "FreePolygon",
+    "name": "自由面",
+    "alias": "FreePolygon",
+    "src": "FreePolygon"
+  },
+  {
+    "id": "FreeHandLine",
+    "name": "自由线",
+    "alias": "FreeHandLine",
+    "src": "FreeHandLine"
+  },
+  {
+    "id": "Polyline",
+    "name": "线",
+    "alias": "Polyline",
+    "src": "Polyline"
+  },
+  {
+    "id": "Curve",
+    "name": "曲线",
+    "alias": "Curve",
+    "src": "Curve"
+  },
+  {
+    "id": "RectFlag",
+    "name": "矩形标志旗",
+    "alias": "RectFlag",
+    "src": "RectFlag"
+  },
+  {
+    "id": "TriangleFlag",
+    "name": "三角标志旗",
+    "alias": "TriangleFlag",
+    "src": "TriangleFlag"
+  },
+  {
+    "id": "CurveFlag",
+    "name": "曲线标志旗",
+    "alias": "CurveFlag",
+    "src": "CurveFlag"
+  },
+  {
+    "id": "TextArea",
+    "name": "气泡",
+    "alias": "TextArea",
+    "src": "TextArea"
+  }
+]

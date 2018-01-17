@@ -1,15 +1,14 @@
-import Pagination from './/pagination/index.js'
+import package_ from '../package'
+import olPlotVue from './components/index'
 
 const components = [
-  Pagination
+  olPlotVue
 ]
 
-const install = function(Vue, opts = {}) {
+const install = function (Vue, opts = {}) {
   components.map(component => {
-    Vue.component(component.name, component);
+    Vue.component(component.name, component)
   })
-  Vue.prototype.$message = Message
-  Vue.prototype.$confirm = MessageBox
 }
 
 /* istanbul ignore if */
@@ -17,9 +16,7 @@ if (typeof window !== 'undefined' && window.Vue) {
   install(window.Vue)
 }
 
-module.exports = {
-  version: '1.0.1',
+export default {
+  version: package_.version,
   install
 }
-
-module.exports.default = module.exports
