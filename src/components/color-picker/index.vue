@@ -24,9 +24,9 @@
 </template>
 
 <script>
-  import { toRgbaColor, rgbaToagb } from './src/color'
-  import sfColorPickerDropdown from './components/picker-dropdown'
-  import Clickoutside from './utils/clickoutside'
+  import { toRgbaColor, rgbaToagb } from '../../utils/color'
+  import sfColorPickerDropdown from './picker-dropdown'
+  import Clickoutside from '../../utils/clickoutside'
   export default {
     name: 'SfColorPicker',
     props: {

@@ -5,7 +5,7 @@
 </template>
 
 <script>
-  import Popper from '../utils/popper/vue-popper'
+  import Popper from '../../utils/popper/vue-popper'
   import { Sketch } from 'vue-color'
   export default {
     name: 'sf-color-picker-dropdown',
