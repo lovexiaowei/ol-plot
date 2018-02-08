@@ -36,11 +36,11 @@
                 </div>
                 <div class="plot-edit-title">边框线宽</div>
                 <div class="plot-edit-line">
-                  <el-slider v-model="borderWidth" :min=0 :max=10 :step=1></el-slider>
+                  <sf-slider v-model="borderWidth" :min=0 :max=10 :step=1></sf-slider>
                 </div>
                 <div class="plot-edit-title">透明度</div>
                 <div class="plot-edit-line">
-                  <el-slider v-model="opacity" :min=0 :max=1 :step=0.1></el-slider>
+                  <sf-slider v-model="opacity" :min=0 :max=1 :step=0.1></sf-slider>
                 </div>
               </div>
             </div>
@@ -56,11 +56,11 @@
                   <span class="font-color span-color">字体颜色</span>
                   <color-picker :color-format="'rgb'" v-model="textAreaColor"></color-picker>
                   <span class="font-size span-size">字体大小</span>
-                  <el-input-number size="small" v-model="textAreaFontSize"></el-input-number>
+                  <sf-input-number size="small" v-model="textAreaFontSize"></sf-input-number>
                 </div>
                 <div class="plot-edit-title">边框线宽</div>
                 <div class="plot-edit-line">
-                  <el-slider v-model="textAreaBorderWidth" :min=0 :max=10 :step=1></el-slider>
+                  <sf-slider v-model="textAreaBorderWidth" :min=0 :max=10 :step=1></sf-slider>
                 </div>
               </div>
             </div>
@@ -75,6 +75,8 @@
   import olPlot from '../src'
   import StyleFactory from '../src/Utils/factory'
   import colorPicker from './color-picker'
+  import sfInputNumber from './input-number'
+  import sfSlider from './slider'
   export default {
     name: 'ol-plot-vue',
     props: {
@@ -319,7 +321,9 @@
       }
     },
     components: {
-      colorPicker
+      sfSlider,
+      colorPicker,
+      sfInputNumber
     }
   }
 </script>

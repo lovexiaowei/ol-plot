@@ -1,16 +1,15 @@
 <template>
-  <div class="el-slider"
-       :class="{ 'is-vertical': vertical, 'el-slider--with-input': showInput }"
+  <div class="sf-slider"
+       :class="{ 'is-vertical': vertical, 'sf-slider--with-input': showInput }"
        role="slider"
        :aria-valuemin="min"
        :aria-valuemax="max"
        :aria-orientation="vertical ? 'vertical': 'horizontal'"
-       :aria-disabled="disabled"
-  >
-    <el-input-number
+       :aria-disabled="disabled">
+    <sf-input-number
       v-model="firstValue"
       v-if="showInput && !range"
-      class="el-slider__input"
+      class="sf-slider__input"
       ref="input"
       @change="$nextTick(emitChange)"
       :step="step"
@@ -20,14 +19,14 @@
       :max="max"
       :debounce="debounce"
       size="small">
-    </el-input-number>
-    <div class="el-slider__runway"
+    </sf-input-number>
+    <div class="sf-slider__runway"
          :class="{ 'show-input': showInput, 'disabled': disabled }"
          :style="runwayStyle"
          @click="onSliderClick"
          ref="slider">
       <div
-        class="el-slider__bar"
+        class="sf-slider__bar"
         :style="barStyle">
       </div>
       <slider-button
@@ -42,22 +41,22 @@
         v-if="range">
       </slider-button>
       <div
-        class="el-slider__stop"
-        v-for="item in stops"
+        class="sf-slider__stop"
+        v-for="(item, key) in stops"
+        :key="key"
         :style="vertical ? { 'bottom': item + '%' } : { 'left': item + '%' }"
         v-if="showStops">
       </div>
     </div>
   </div>
 </template>
-
 <script>
-  import InputNumber from '../input-number'
+  import sfInputNumber from '../input-number'
   import SliderButton from './button.vue'
   import Emitter from '../../utils/emitter'
 
   export default {
-    name: 'Slider',
+    name: 'sf-slider',
     mixins: [Emitter],
     props: {
       min: {
@@ -125,13 +124,10 @@
         sliderSize: 1
       };
     },
-
     watch: {
       value (val, oldVal) {
-        if (this.dragging ||
-          Array.isArray(val) &&
-          Array.isArray(oldVal) &&
-          val.every((item, index) => item === oldVal[index])) {
+        /* eslint-disable */
+        if (this.dragging || Array.isArray(val) && Array.isArray(oldVal) && val.every((item, index) => item === oldVal[index])) {
           return;
         }
         this.setValues();
@@ -284,13 +280,13 @@
 
       barSize () {
         return this.range
-          ? `${ 100 * (this.maxValue - this.minValue) / (this.max - this.min) }%`
-          : `${ 100 * (this.firstValue - this.min) / (this.max - this.min) }%`;
+          ? `${100 * (this.maxValue - this.minValue) / (this.max - this.min)}%`
+          : `${100 * (this.firstValue - this.min) / (this.max - this.min)}%`;
       },
 
       barStart () {
         return this.range
-          ? `${ 100 * (this.minValue - this.min) / (this.max - this.min) }%`
+          ? `${100 * (this.minValue - this.min) / (this.max - this.min)}%`
           : '0%';
       },
 
@@ -352,7 +348,7 @@
       window.removeEventListener('resize', this.resetSize)
     },
     components: {
-      InputNumber,
+      sfInputNumber,
       SliderButton
     }
   }

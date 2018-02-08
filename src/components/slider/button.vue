@@ -1,6 +1,6 @@
 <template>
   <div
-    class="el-slider__button-wrapper"
+    class="sf-slider__button-wrapper"
     @mouseenter="handleMouseEnter"
     @mouseleave="handleMouseLeave"
     @mousedown="onButtonDown"
@@ -15,23 +15,11 @@
     @keydown.down.prevent="onLeftKeyDown"
     @keydown.up.prevent="onRightKeyDown"
   >
-    <el-tooltip placement="top" ref="tooltip" :disabled="!showTooltip">
-      <span slot="content">{{ formatValue }}</span>
-      <div class="el-slider__button" :class="{ 'hover': hovering, 'dragging': dragging }"></div>
-    </el-tooltip>
   </div>
 </template>
-
 <script>
-  import ElTooltip from 'element-ui/packages/tooltip';
-
   export default {
-    name: 'ElSliderButton',
-
-    components: {
-      ElTooltip
-    },
-
+    name: 'sf-slider-button',
     props: {
       value: {
         type: Number,
@@ -42,8 +30,7 @@
         default: false
       }
     },
-
-    data() {
+    data () {
       return {
         hovering: false,
         dragging: false,
@@ -57,75 +44,54 @@
         oldValue: this.value
       };
     },
-
     computed: {
-      disabled() {
+      disabled () {
         return this.$parent.disabled;
       },
-
-      max() {
+      max () {
         return this.$parent.max;
       },
-
-      min() {
+      min () {
         return this.$parent.min;
       },
-
-      step() {
+      step () {
         return this.$parent.step;
       },
-
-      showTooltip() {
-        return this.$parent.showTooltip;
-      },
-
-      precision() {
+      precision () {
         return this.$parent.precision;
       },
-
-      currentPosition() {
-        return `${ (this.value - this.min) / (this.max - this.min) * 100 }%`;
+      currentPosition () {
+        return `${(this.value - this.min) / (this.max - this.min) * 100}%`;
       },
-
-      enableFormat() {
-        return this.$parent.formatTooltip instanceof Function;
-      },
-
-      formatValue() {
-        return this.enableFormat && this.$parent.formatTooltip(this.value) || this.value;
-      },
-
-      wrapperStyle() {
-        return this.vertical ? { bottom: this.currentPosition } : { left: this.currentPosition };
+      wrapperStyle () {
+        return this.vertical ? {bottom: this.currentPosition} : {left: this.currentPosition};
       }
     },
-
     watch: {
-      dragging(val) {
+      dragging (val) {
         this.$parent.dragging = val;
       }
     },
-
     methods: {
-      displayTooltip() {
+      displayTooltip () {
         this.$refs.tooltip && (this.$refs.tooltip.showPopper = true);
       },
 
-      hideTooltip() {
+      hideTooltip () {
         this.$refs.tooltip && (this.$refs.tooltip.showPopper = false);
       },
 
-      handleMouseEnter() {
+      handleMouseEnter () {
         this.hovering = true;
         this.displayTooltip();
       },
 
-      handleMouseLeave() {
+      handleMouseLeave () {
         this.hovering = false;
         this.hideTooltip();
       },
 
-      onButtonDown(event) {
+      onButtonDown (event) {
         if (this.disabled) return;
         event.preventDefault();
         this.onDragStart(event);
@@ -133,17 +99,17 @@
         window.addEventListener('mouseup', this.onDragEnd);
         window.addEventListener('contextmenu', this.onDragEnd);
       },
-      onLeftKeyDown() {
+      onLeftKeyDown () {
         if (this.disabled) return;
         this.newPosition = parseFloat(this.currentPosition) - this.step / (this.max - this.min) * 100;
         this.setPosition(this.newPosition);
       },
-      onRightKeyDown() {
+      onRightKeyDown () {
         if (this.disabled) return;
         this.newPosition = parseFloat(this.currentPosition) + this.step / (this.max - this.min) * 100;
         this.setPosition(this.newPosition);
       },
-      onDragStart(event) {
+      onDragStart (event) {
         this.dragging = true;
         this.isClick = true;
         if (this.vertical) {
@@ -155,7 +121,7 @@
         this.newPosition = this.startPosition;
       },
 
-      onDragging(event) {
+      onDragging (event) {
         if (this.dragging) {
           this.isClick = false;
           this.displayTooltip();
@@ -173,7 +139,7 @@
         }
       },
 
-      onDragEnd() {
+      onDragEnd () {
         if (this.dragging) {
           /*
            * 防止在 mouseup 后立即触发 click，导致滑块有几率产生一小段位移
@@ -193,7 +159,7 @@
         }
       },
 
-      setPosition(newPosition) {
+      setPosition (newPosition) {
         if (newPosition === null) return;
         if (newPosition < 0) {
           newPosition = 0;

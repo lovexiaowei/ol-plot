@@ -1,6 +1,6 @@
 import package_ from '../package'
 import olPlotVue from './components/index'
-
+import './assets/style/index.scss'
 const components = [
   olPlotVue
 ]

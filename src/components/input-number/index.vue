@@ -1,33 +1,30 @@
 <template>
-  <div class="el-input-number"
+  <div class="sf-input-number"
        :class="[
-      inputNumberSize ? 'el-input-number--' + inputNumberSize : '',
+      inputNumberSize ? 'sf-input-number--' + inputNumberSize : '',
       { 'is-disabled': disabled },
       { 'is-without-controls': !controls },
       { 'is-controls-right': controlsAtRight }
-    ]"
-  >
+    ]">
     <span
       v-if="controls"
-      class="el-input-number__decrease"
+      class="sf-input-number__decrease"
       :class="{'is-disabled': minDisabled}"
       v-repeat-click="decrease"
       @keydown.enter="decrease"
-      role="button"
-    >
+      role="button">
       <i :class="`el-icon-${controlsAtRight ? 'arrow-down' : 'minus'}`"></i>
     </span>
     <span
       v-if="controls"
-      class="el-input-number__increase"
+      class="sf-input-number__increase"
       :class="{'is-disabled': maxDisabled}"
       v-repeat-click="increase"
       @keydown.enter="increase"
-      role="button"
-    >
+      role="button">
       <i :class="`el-icon-${controlsAtRight ? 'arrow-up' : 'plus'}`"></i>
     </span>
-    <el-input
+    <sf-input
       :value="currentValue"
       @keydown.up.native.prevent="increase"
       @keydown.down.native.prevent="decrease"
@@ -40,35 +37,26 @@
       :min="min"
       :name="name"
       ref="input"
-      :label="label"
-    >
+      :label="label">
       <template slot="prepend" v-if="$slots.prepend">
         <slot name="prepend"></slot>
       </template>
       <template slot="append" v-if="$slots.append">
         <slot name="append"></slot>
       </template>
-    </el-input>
+    </sf-input>
   </div>
 </template>
 <script>
-  import ElInput from 'element-ui/packages/input';
-  import Focus from 'element-ui/src/mixins/focus';
-  import RepeatClick from 'element-ui/src/directives/repeat-click';
-
+  import sfInput from '../input';
+  import RepeatClick from '../../utils/repeat-click';
   export default {
-    name: 'ElInputNumber',
-    mixins: [Focus('input')],
-    inject: {
-      elFormItem: {
-        default: ''
-      }
-    },
+    name: 'sf-input-number',
     directives: {
       repeatClick: RepeatClick
     },
     components: {
-      ElInput
+      sfInput
     },
     props: {
       step: {
@@ -139,6 +127,9 @@
       }
     },
     methods: {
+      focus () {
+        this.$refs['input'].focus();
+      },
       toPrecision (num, precision) {
         if (precision === undefined) precision = this.precision;
         return parseFloat(parseFloat(Number(num).toFixed(precision)));
@@ -161,9 +152,7 @@
       },
       _decrease (val, step) {
         if (typeof val !== 'number') return this.currentValue;
-
         const precisionFactor = Math.pow(10, this.precision);
-
         return this.toPrecision((precisionFactor * val - precisionFactor * step) / precisionFactor);
       },
       increase () {
