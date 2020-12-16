@@ -21,7 +21,6 @@ class GatheringPlace extends Polygon {
       this.setCoordinates(coordinates)
     }
   }
-
   /**
    * 获取标绘类型
    * @returns {*}

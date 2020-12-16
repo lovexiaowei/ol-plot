@@ -25,7 +25,7 @@ class BaiDu extends TileImage {
         if (y < 0) {
           y = 'M' + (-y)
         }
-        return url.replace('{0-3}', BaiDu.getRandom(0, 3)).replace('{x}', (x).toString()).replace('{y}', y.toString()).replace('{z}', (z).toString())
+        return url.replace('{0-3}', '1').replace('{x}', (x).toString()).replace('{y}', y.toString()).replace('{z}', (z).toString())
       }
     }
     let levels = options['levels'] ? options['levels'] : 19
@@ -55,20 +55,18 @@ class BaiDu extends TileImage {
       url: url,
       wrapX: options.wrapX
     })
+    this.ATTRIBUTION = new Attribution({
+      html: '&copy; ' +
+        '<a href="http://map.baidu.com/">百度地图</a> ' +
+        'contributors.'
+    })
   }
-
-  static getRandom = function (min, max) {
+  getRandom (min, max) {
     const r = Math.random() * (max - min)
     let re = Math.round(r + min)
     re = Math.max(Math.min(re, max), min)
     return re
   }
-
-  static ATTRIBUTION = new Attribution({
-    html: '&copy; ' +
-      '<a href="http://map.baidu.com/">百度地图</a> ' +
-      'contributors.'
-  })
 }
 
 export default BaiDu

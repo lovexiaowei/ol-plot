@@ -1,8 +1,9 @@
 import { Map, View } from 'ol'
+import 'ol/ol.css'
 import { Tile } from 'ol/layer'
-import BaiDu from './source/BaiDu'
+import BaiDu from '../examples/source/BaiDu'
 
-import olPlot from '../'
+import olPlot from './index'
 
 const gaodeMapLayer = new Tile({
   source: new BaiDu({
@@ -11,6 +12,9 @@ const gaodeMapLayer = new Tile({
     url: 'http://shangetu{0-3}.map.bdimg.com/it/u=x={x};y={y};z={z};v=009;type=sate&fm=46&app=webearth2&v=009&udt=20170908'
   })
 })
+
+console.log('okok')
+
 
 const map = new Map({
   layers: [gaodeMapLayer],
@@ -50,7 +54,7 @@ function onDrawEnd (event) {
 plot.plotDraw.on('drawEnd', onDrawEnd)
 plot.plotDraw.on('active_textArea', function (event) {
   const style = plot.plotUtils.getPlotTextStyleCode(event.overlay)
-  console.log(style)
+  // console.log(style)
 })
 
 // 指定标绘类型，开始绘制。

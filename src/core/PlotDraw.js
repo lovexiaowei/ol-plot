@@ -295,7 +295,7 @@ class PlotDraw extends Observable {
       this.map.on('pointermove', this.mapMouseMoveHandler)
     }
     if (this.plotType && this.feature) {
-      this.plotParams['plotType'] = this.plotType
+      this.plotParams['plotType'] = this.plotType;
       this.feature.setProperties(this.plotParams)
     }
   }

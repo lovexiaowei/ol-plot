@@ -1,4 +1,4 @@
-import './scss/index.scss'
+import './scss/index.less'
 import PlotDraw from './core/PlotDraw'
 import PlotEdit from './core/PlotEdit'
 import PlotUtils from './core/PlotUtils'
@@ -9,9 +9,10 @@ class olPlot {
     this.plotDraw = new PlotDraw(map, options)
     this.plotEdit = new PlotEdit(map, options)
     this.plotUtils = new PlotUtils(map, options)
+    this.PlotTypes = PlotTypes
+    this.Geometry = Geometry
   }
-  static PlotTypes = PlotTypes
-  static Geometry = Geometry
+  // static PlotTypes = PlotTypes
+  // static Geometry = Geometry
 }
-
 export default olPlot
