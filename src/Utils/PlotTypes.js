@@ -1,3 +1,4 @@
+const TEXTAREA = 'Textarea'
 const ARC = 'Arc'
 const CURVE = 'Curve'
 const GATHERING_PLACE = 'GatheringPlace'
